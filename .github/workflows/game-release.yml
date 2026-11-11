@@ -49,11 +49,14 @@ jobs:
           path: dist
 
       - name: Deploy to CrazyGames (if CRAZYGAMES_TOKEN is set)
-        if: ${{ secrets.CRAZYGAMES_TOKEN != '' }}
         env:
           CRAZYGAMES_TOKEN: ${{ secrets.CRAZYGAMES_TOKEN }}
         run: |
-          npx @crazygames/sdk-cli upload --token "$CRAZYGAMES_TOKEN" --file game-portal-release.zip
+          if [ -n "$CRAZYGAMES_TOKEN" ]; then
+            npx @crazygames/sdk-cli upload --token "$CRAZYGAMES_TOKEN" --file game-portal-release.zip
+          else
+            echo "CRAZYGAMES_TOKEN not set, skipping CrazyGames upload."
+          fi
 
   deploy-pages:
     needs: build
