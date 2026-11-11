@@ -1,0 +1,6 @@
+{
+  "name": "AI Startup Simulator",
+  "description": "Build your AI empire from a garage GPU to AGI Singularity. Click to mint tokens, deploy auto-scripts, upgrade server clusters, and trigger 10x Fever Mode.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
