@@ -191,6 +191,12 @@ export default function App() {
 
   const startFeverAd = useCallback(() => {
     if (isFever) return;
+    if (new URLSearchParams(window.location.search).get('trailer') === '1') {
+      setFeverLeft(FEVER_DURATION_SEC);
+      soundEngine.playFeverStart();
+      canvasRef.current?.triggerShake(10);
+      return;
+    }
     setAdModal({ type: 'fever', secondsLeft: 3 });
   }, [isFever]);
 

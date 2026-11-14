@@ -1,0 +1,82 @@
+name: Record 10s Gameplay Trailer (Movie)
+
+on:
+  workflow_dispatch:
+    inputs:
+      orientation:
+        description: 'Video aspect ratio (both = 16:9 Landscape + 9:16 TikTok/Shorts)'
+        required: true
+        default: 'both'
+        type: choice
+        options:
+          - both
+          - landscape
+          - portrait
+
+jobs:
+  record-trailer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install project dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build production game
+        run: npm run build
+
+      - name: Install Playwright & Chromium (isolated temp dir)
+        run: |
+          mkdir -p /tmp/pw-runner
+          cd /tmp/pw-runner
+          npm init -y
+          npm install playwright
+          npx playwright install chromium --with-deps
+
+      - name: Ensure ffmpeg is installed
+        run: |
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get update && sudo apt-get install -y ffmpeg
+          fi
+
+      - name: Start preview server & record 10s gameplay video
+        env:
+          PLAYWRIGHT_MODULE: /tmp/pw-runner/node_modules/playwright
+          TRAILER_ORIENTATION: ${{ github.event.inputs.orientation || 'both' }}
+          TRAILER_URL: 'http://127.0.0.1:4173/?trailer=1'
+        run: |
+          npx vite preview --port 4173 --host 127.0.0.1 &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID 2>/dev/null || true" EXIT
+
+          for i in $(seq 1 30); do
+            if curl -s http://127.0.0.1:4173 >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+
+          node scripts/record-trailer.mjs
+
+      - name: Convert WebM recordings to MP4 (H.264)
+        run: |
+          cd trailer-output
+          for f in *.webm; do
+            [ -e "$f" ] || continue
+            base="${f%.webm}"
+            ffmpeg -y -i "$f" -t 10.5 -c:v libx264 -preset fast -crf 20 -pix_fmt yuv420p -movflags +faststart "${base}.mp4"
+          done
+          ls -lh
+
+      - name: Upload 10s Gameplay Movie Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gameplay-trailer-movies
+          path: trailer-output/
+          retention-days: 30

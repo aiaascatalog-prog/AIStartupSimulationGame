@@ -30,3 +30,17 @@
 ### 3. Y8 Games（網頁拖拉上傳）
 1. 從 GitHub **Actions -> Artifacts** 下載 `game-portal-release.zip`。
 2. 直接拖入 Y8 開發者後台上傳即可。
+
+---
+
+## 三、 自動錄製 10 秒宣傳短片（MP4 / WebM，適合 TikTok / Shorts / 遊戲平台上架）
+
+專案已內建 Playwright 錄影腳本（`scripts/record-trailer.mjs`）與專用工作流（`.github/workflows/record-trailer.yml`），無需本機安裝瀏覽器或剪輯軟體：
+
+1. 打開 GitHub 倉庫頁面，點擊上方的 **Actions** 標籤。
+2. 在左側工作流列表中選擇 **Record 10s Gameplay Trailer (Movie)**。
+3. 點擊右側 **Run workflow**，選擇影片比例：
+   - `both`（預設）：同時產生 **16:9 橫版**（`1280x720`，適合遊戲平台/YouTube）與 **9:16 豎版**（`720x1280`，適合 TikTok / IG Reels / Shorts）。
+   - `landscape` 或 `portrait`：僅錄製單一比例。
+4. 等待工作流完成（約 1 分鐘），滑動到頁面底部的 **Artifacts**，點擊下載 **`gameplay-trailer-movies`**，解壓縮即可取得高畫質 `.mp4` 與 `.webm` 影片檔！
+
