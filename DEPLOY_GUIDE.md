@@ -33,14 +33,30 @@
 
 ---
 
-## 三、 自動錄製 10 秒宣傳短片（MP4 / WebM，適合 TikTok / Shorts / 遊戲平台上架）
+## 三、 一鍵產出平台專用素材包（Y8 / CrazyGames / 短影音）
 
-專案已內建 Playwright 錄影腳本（`scripts/record-trailer.mjs`）與專用工作流（`.github/workflows/record-trailer.yml`），無需本機安裝瀏覽器或剪輯軟體：
+專案已內建符合 **Y8** 與 **CrazyGames** 官方尺寸與時長規範的自動化產出工作流（`.github/workflows/record-trailer.yml`）：
 
 1. 打開 GitHub 倉庫頁面，點擊上方的 **Actions** 標籤。
-2. 在左側工作流列表中選擇 **Record 10s Gameplay Trailer (Movie)**。
-3. 點擊右側 **Run workflow**，選擇影片比例：
-   - `both`（預設）：同時產生 **16:9 橫版**（`1280x720`，適合遊戲平台/YouTube）與 **9:16 豎版**（`720x1280`，適合 TikTok / IG Reels / Shorts）。
-   - `landscape` 或 `portrait`：僅錄製單一比例。
-4. 等待工作流完成（約 1 分鐘），滑動到頁面底部的 **Artifacts**，點擊下載 **`gameplay-trailer-movies`**，解壓縮即可取得高畫質 `.mp4` 與 `.webm` 影片檔！
+2. 在左側選擇 **Generate Platform Media Pack (Y8 & CrazyGames)** → 右側 **Run workflow**。
+3. 選擇目標平台（`all`、`y8`、`crazygames` 或 `social`），執行完成後於底部 **Artifacts** 直接下載對應壓縮包：
+
+### `y8-media-pack`（完全符合 Y8 Media Guidelines）
+- `game-portal-release.zip`（遊戲本體 ZIP）
+- `y8-video-16x9-1280x720.mp4`（**1280×720**、**17–18 秒** ≥15s、無開場黑畫面/標題選單，直接進入實機遊玩）
+- `y8-video-4x3-960x720.mp4`（**960×720**、**17–18 秒** 4:3 備用實機影片）
+- `y8-screenshot-widescreen-1-1280x720.png` / `y8-screenshot-widescreen-2-1280x720.png`（**1280×720** 實機截圖）
+- `y8-screenshot-standard-760x570.png`（**760×570** 4:3 標準截圖）
+- `y8-promo-landscape-1920x1080.jpg` / `y8-promo-portrait-1080x1920.jpg` / `y8-promo-card-760x570.jpg`
+
+### `crazygames-media-pack`（完全符合 CrazyGames Technical & Cover Guidelines）
+- `game-portal-release.zip`（純相對路徑 `./`、體積 < 1 MB）
+- `crazygames-cover-landscape-1920x1080.jpg`（16:9 橫版封面 **1920×1080**）
+- `crazygames-cover-portrait-800x1200.jpg`（2:3 直版封面 **800×1200**）
+- `crazygames-cover-square-800x800.jpg`（1:1 方形封面 **800×800**）
+- `crazygames-video-landscape-1920x1080.mp4`（**17 秒**、1080p 16:9、靜音、無游標、以靜態封面銜接實機）
+- `crazygames-video-portrait-800x1200.mp4`（**17 秒**、2:3 直式、靜音、無游標、以靜態封面銜接實機）
+
+### `social-shorts-pack`
+- `social-shorts-9x16-1080x1920.mp4`（9:16 豎版短片，適合 TikTok / IG Reels / YouTube Shorts）
 

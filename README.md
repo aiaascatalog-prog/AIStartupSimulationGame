@@ -11,9 +11,12 @@ All promotional artwork is stored in `src/assets/images/` for direct download an
 | Asset | Aspect Ratio | File Path | Recommended Portal Usage |
 | :--- | :--- | :--- | :--- |
 | **Cover Banner** | `16:9` | `src/assets/images/cover_banner_1794444460793.jpg` | Hero / Landscape Cover / Store Thumbnail |
-| **Game Icon** | `1:1` | `src/assets/images/game_icon_1794444460164.jpg` | Square Icon / Mobile Portal Thumbnail |
+| **Portrait Cover** | `2:3` | `src/assets/images/cover_portrait_1794643037572.jpg` | CrazyGames 2:3 Cover (`800x1200`) & Portrait Promo |
+| **Game Icon** | `1:1` | `src/assets/images/game_icon_1794444460164.jpg` | Square Icon / CrazyGames `800x800` Cover |
 | **Gameplay Showcase** | `16:9` | `src/assets/images/screenshot_gameplay_1794551316574.jpg` | Screenshot #1 (Core Clicking & Upgrades) |
 | **10x Fever Showcase** | `16:9` | `src/assets/images/screenshot_fever_1794551316900.jpg` | Screenshot #2 (Golden Fever & VC$ Boost) |
+
+> **Tip:** Run the **Generate Platform Media Pack (Y8 & CrazyGames)** GitHub Action to automatically generate exact-pixel screenshots, cover images, `game-portal-release.zip`, and 17-second MP4 gameplay videos tailored to **Y8** (`1280x720`, `760x570`, `>=15s`) and **CrazyGames** (`1920x1080`, `800x1200`, `800x800`, muted `17s` preview videos).
 
 ---
 

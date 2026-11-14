@@ -35,7 +35,11 @@ function loadSave(): SaveState {
 }
 
 export default function App() {
-  const [screen, setScreen] = useState<GameScreen>('title');
+  const isTrailerMode = useMemo(
+    () => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('trailer') === '1',
+    []
+  );
+  const [screen, setScreen] = useState<GameScreen>(() => (isTrailerMode ? 'playing' : 'title'));
   const [save, setSave] = useState<SaveState>(() => loadSave());
   const [muted, setMuted] = useState(false);
   const [feverLeft, setFeverLeft] = useState(0);
@@ -191,14 +195,14 @@ export default function App() {
 
   const startFeverAd = useCallback(() => {
     if (isFever) return;
-    if (new URLSearchParams(window.location.search).get('trailer') === '1') {
+    if (isTrailerMode) {
       setFeverLeft(FEVER_DURATION_SEC);
       soundEngine.playFeverStart();
       canvasRef.current?.triggerShake(10);
       return;
     }
     setAdModal({ type: 'fever', secondsLeft: 3 });
-  }, [isFever]);
+  }, [isFever, isTrailerMode]);
 
   const claimAdReward = useCallback(() => {
     if (!adModal || adModal.secondsLeft > 0) return;
@@ -285,7 +289,11 @@ export default function App() {
   }, [screen, adModal, offlinePending, handleCoreClick, buyUpgrade, startFeverAd]);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#070b14] text-slate-100 font-sans select-none">
+    <div
+      className={`relative w-screen h-screen overflow-hidden bg-[#070b14] text-slate-100 font-sans select-none ${
+        isTrailerMode ? '[&_*]:!cursor-none !cursor-none' : ''
+      }`}
+    >
       {/* Isolated 60fps Canvas */}
       <GameCanvas
         ref={canvasRef}
