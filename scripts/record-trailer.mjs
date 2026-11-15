@@ -73,13 +73,19 @@ async function createSeededContext(browser, width, height, videoDir) {
 
   await page.addInitScript(() => {
     const seedSave = {
-      tokens: 180,
-      lifetimeTokens: 2400,
+      tokens: 260,
+      lifetimeTokens: 3200,
       totalClicks: 42,
+      bugsZapped: 1,
+      vcCaught: 1,
+      ipoShares: 0,
+      prestigeCount: 0,
       upgrades: { auto_script: 4, gpu_rack: 2 },
+      research: [],
+      achievements: ['first_mint'],
       lastSavedAt: Date.now(),
     };
-    localStorage.setItem('ai_startup_sim_save_v1', JSON.stringify(seedSave));
+    localStorage.setItem('ai_startup_sim_save_v2', JSON.stringify(seedSave));
   });
 
   await page.goto(TARGET_URL, { waitUntil: 'networkidle' });

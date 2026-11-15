@@ -29,10 +29,12 @@ jobs:
       - name: Install project dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Build production game & ZIP
+      - name: Build generic & CrazyGames game ZIPs
         run: |
           npm run build
           (cd dist && zip -r ../game-portal-release.zip .)
+          VITE_PORTAL=crazygames npx vite build --outDir dist-cg
+          (cd dist-cg && zip -r ../crazygames-release.zip .)
 
       - name: Install Playwright & Chromium (isolated temp dir)
         run: |
@@ -88,7 +90,7 @@ jobs:
         if: ${{ inputs.platform == 'all' || inputs.platform == 'crazygames' }}
         run: |
           mkdir -p media-output/crazygames
-          cp game-portal-release.zip media-output/crazygames/game-portal-release.zip
+          cp crazygames-release.zip media-output/crazygames/crazygames-release.zip
 
           # 3 Mandatory Cover Image Sizes
           ffmpeg -y -i src/assets/images/cover_banner_1794444460793.jpg -vf "scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080" -q:v 2 media-output/crazygames/crazygames-cover-landscape-1920x1080.jpg

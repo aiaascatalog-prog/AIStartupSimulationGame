@@ -4,9 +4,23 @@ import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
+  const isCrazyGamesBuild = process.env.VITE_PORTAL === 'crazygames';
   return {
     base: './',
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      {
+        name: 'inject-portal-sdk',
+        transformIndexHtml(html) {
+          if (!isCrazyGamesBuild) return html;
+          return html.replace(
+            '</head>',
+            '    <script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>\n  </head>'
+          );
+        },
+      },
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
